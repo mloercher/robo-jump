@@ -14,6 +14,7 @@ let isGoingLeft = false;
 let isGoingRight = false;
 let leftTimerId;
 let rightTimerId;
+let score = 0;
 
 function createRobo() {
   grid.appendChild(robo);
@@ -50,7 +51,7 @@ function createPlatforms() {
 
 function movePlatforms() {
   if (roboBottomSpace > 200) {
-    platforms.forEach(platform => {
+    platforms.forEach((platform) => {
       platform.bottom -= 4;
       let visual = platform.visual;
       visual.style.bottom = platform.bottom + "px";
@@ -60,10 +61,13 @@ function movePlatforms() {
         //   shift will get rid of first item in platforms array
         platforms.shift();
         console.log(platforms);
+        let newPlatform = new Platform(600);
+        platforms.push(newPlatform);
+        score++;
+        console.log(score);
       }
     });
   }
-  
 }
 
 //everything in this function happens every 30 miliseconds
@@ -108,8 +112,14 @@ function fall() {
 function gameOver() {
   console.log("GAME OVER");
   isGameOver = true;
+  while (grid.firstChild) {
+    grid.removeChild(grid.firstChild);
+  }
+  grid.innerHTML = score;
   clearInterval(upTimeId);
   clearInterval(downTimeId);
+  clearInterval(leftTimerId);
+  clearInterval(rightTimerId);
 }
 
 // function to control robo with keys
@@ -125,8 +135,8 @@ function control(e) {
 
 function moveLeft() {
   if ((isGoingRight = true)) {
-    clearInterval(rightTimerId);
     isGoingRight = false;
+    clearInterval(rightTimerId);
   }
   isGoingLeft = true;
   leftTimerId = setInterval(function () {
@@ -141,8 +151,8 @@ function moveLeft() {
 
 function moveRight() {
   if ((isGoingLeft = true)) {
-    clearInterval(leftTimerId);
     isGoingLeft = false;
+    clearInterval(leftTimerId);
   }
   isGoingRight = true;
   rightTimerId = setInterval(function () {

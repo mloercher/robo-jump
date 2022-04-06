@@ -1,8 +1,16 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .grid{
     width: 400px;
     height: 600px;
     background-color: green;
     position: relative;
+    font-size: 200px;
+    text-align: center;
 }
 
 .robo{
