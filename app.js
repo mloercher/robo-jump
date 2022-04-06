@@ -1,11 +1,14 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid')
     const robo = document.createElement('div')
     let roboLeftSpace = 50
-    let roboBottomSpace = 250
+    let roboBottomSpace = 150
     let platformCount = 5
-    let gameOver = false
+    let isGameOver = false
     let platforms = []
+    let upTimeId
+    let downTimeId
 
     function createRobo() {
         grid.appendChild(robo)
@@ -49,12 +52,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    //everything in this function happens every 30 miliseconds
+    function jump() {
+        clearInterval(downTimeId)
+        upTimeId = setInterval(function() {
+            roboBottomSpace += 20
+            robo.style.bottom = roboBottomSpace + 'px'
+            if (roboBottomSpace > 350) {
+                fall()
+            }
+        }, 30)
+    }
+
+    function fall() {
+        clearInterval(upTimeId)
+        downTimeId = setInterval(function () {
+            roboBottomSpace -= 5
+            robo.style.bottom = roboBottomSpace + 'px'
+            if (roboBottomSpace <= 0) {
+                gameOver()
+            }
+        }, 30)
+    }
+
+    function gameOver() {
+        console.log('GAME OVER')
+        isGameOver = true 
+        clearInterval(upTimeId)
+        clearInterval(downTimeId)
+
+    }
 
     function start () {
-        if (!gameOver) {
+        if (!isGameOver) {
             createRobo()
             createPlatforms()
             setInterval(movePlatforms, 30)
+            jump()
         }
     }
     //create start button to attach
