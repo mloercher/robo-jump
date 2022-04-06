@@ -50,12 +50,20 @@ function createPlatforms() {
 
 function movePlatforms() {
   if (roboBottomSpace > 200) {
-    platforms.forEach((platform) => {
+    platforms.forEach(platform => {
       platform.bottom -= 4;
       let visual = platform.visual;
       visual.style.bottom = platform.bottom + "px";
+      if (platform.bottom < 10) {
+        let firstPlatform = platforms[0].visual;
+        firstPlatform.classList.remove("platform");
+        //   shift will get rid of first item in platforms array
+        platforms.shift();
+        console.log(platforms);
+      }
     });
   }
+  
 }
 
 //everything in this function happens every 30 miliseconds
